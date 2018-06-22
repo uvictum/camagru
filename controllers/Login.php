@@ -2,11 +2,13 @@
 
 class Login{
 
-    function actionSignin() {
+    function actionSignin()
+    {
         echo"high there! actionSignin<br>";
     }
 
-    function actionSignup() {
+    function actionSignup()
+    {
         echo "actionSignup<br>";
     }
 }
