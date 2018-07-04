@@ -6,4 +6,3 @@ return array(
         "/signup" => "login/signup",
         "/editor" => "editor/image",
         "/photo" => "image/view");
-?>
