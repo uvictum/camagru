@@ -14,8 +14,9 @@ class Router
 
 	public function chooseRoute() {
 		$path = $_SERVER['REQUEST_URI'];
+		//echo $path.'<br></br>';
 		foreach ($this->routes as $rt => $pth) {
-			if ($path == $rt) {
+			if (preg_match($rt,$path)) {
 				$result = explode('/', $pth);
 				$className = ucfirst(array_shift($result));
 				$actionName = 'action'.ucfirst(array_shift($result));
@@ -23,15 +24,11 @@ class Router
                 if (file_exists($classPath)) {
                     include_once($classPath);
                 }
-				$controllerObject = new $className;
+                $controllerObject = new $className;
 				$controllerObject->$actionName();
 				break;
 			}
 		}
-
-
-
 	}
-
 }
 ?>

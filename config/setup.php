@@ -19,10 +19,15 @@ class Setup
 
     public function SetupDB()
     {
+        $this->pdo->query('CREATE DATABASE camagrudb');
+        include(ROOT . '/config/database.php');
+        $pdqry = new PDO($DB_DSN, $DB_USER, $DB_PASSWORD);
         $qry = file_get_contents(ROOT.'/sqls/setupdb.sql');
-        $this->pdo->query($qry);
+        $pdqry->query($qry);
         $res = ConnectDatabase::ConnectDB();
-        if ($res)
-            echo "database created successfully!<br>";
+        if ($res) {
+            echo 'database created successfully!<br>';
+        }
+        header("Refresh:2");
     }
 }
