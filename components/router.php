@@ -14,6 +14,7 @@ class Router
 
 	public function chooseRoute() {
 		$path = $_SERVER['REQUEST_URI'];
+		$className = NULL;
 		//echo $path.'<br></br>';
 		foreach ($this->routes as $rt => $pth) {
 			if (preg_match($rt,$path)) {
@@ -25,10 +26,14 @@ class Router
                     include_once($classPath);
                 }
                 $controllerObject = new $className;
-				$controllerObject->$actionName();
+                //include (ROOT.'/views/header.php');
+                $controllerObject->$actionName();
+                //include (ROOT.'/views/footer.php');
 				break;
 			}
 		}
+		if (!isset($className)) {
+		    header("HTTP/1.0 404 Not Found");
+        }
 	}
 }
-?>

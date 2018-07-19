@@ -12,7 +12,7 @@ class Gallery
 
     public function __construct()
     {
-        $this->img = 11;
+        $this->img = 42;
     }
     public function actionDisplay()
     {

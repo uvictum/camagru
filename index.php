@@ -15,6 +15,7 @@ if (!$PDOConnection) {
 }
 else {
 // 4) запустить роутер
+    session_start();
     $router = new Router;
     $router->chooseRoute();
 }
