@@ -8,5 +8,8 @@
 
 class Cabinet
 {
-
+    function actionDashboard()
+    {
+        require_once (ROOT. '/views/cabinet.php');
+    }
 }

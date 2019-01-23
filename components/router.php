@@ -9,12 +9,11 @@ class Router
 	public function __construct()
 	{
 		$routesPath = ROOT.'/config/routes.php';
-		$this->routes = include($routesPath);
+		$this->routes = require_once($routesPath);
 	}
 
 	public function chooseRoute() {
 		$path = $_SERVER['REQUEST_URI'];
-		$className = NULL;
 		//echo $path.'<br></br>';
 		foreach ($this->routes as $rt => $pth) {
 			if (preg_match($rt,$path)) {
@@ -23,7 +22,7 @@ class Router
 				$actionName = 'action'.ucfirst(array_shift($result));
                 $classPath = ROOT.'/controllers/'.$className.'.php';
                 if (file_exists($classPath)) {
-                    include_once($classPath);
+                    require_once($classPath);
                 }
                 $controllerObject = new $className;
                 //include (ROOT.'/views/header.php');
@@ -33,7 +32,8 @@ class Router
 			}
 		}
 		if (!isset($className)) {
-		    header("HTTP/1.0 404 Not Found");
+            header('HTTP/1.0 404 Not Found', true, 404);
+            die();
         }
 	}
 }

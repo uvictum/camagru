@@ -12,7 +12,7 @@ class Login
 
     public function actionSignin()
     {
-        echo"actionSignin<br>";
+        //echo"actionSignin<br>";
         include_once (ROOT.'/views/signin.php');
         if ($_POST) {
             if ($_POST['submit'] == 'signin') {
@@ -28,7 +28,9 @@ class Login
     {
         if ($_SESSION && isset($_SESSION['logged_user'])) {
             unset($_SESSION['logged_user']);
+            unset($_SESSION['login']);
         }
+        header("Refresh: 1; url=../");
     }
 
     public function authUser()
@@ -37,6 +39,7 @@ class Login
         if ($res == 1) {
             $userdata = $this->user->getUserData($_POST['username']);
             $_SESSION['logged_user'] = $userdata['ID'];
+            $_SESSION['login'] = $userdata['Login'];
             return 1;
         }
         elseif ($res == 2) {
@@ -56,7 +59,7 @@ class Login
 
     public function actionSignup()
     {
-        echo "actionSignup<br>";
+        //echo "actionSignup<br>";
         include_once (ROOT.'/views/signup.php');
         if ($_POST) {
             if ($_POST['submit'] == 'signup') {

@@ -1,0 +1,86 @@
+#viewport, #canvas {
+    max-width: 100%;
+    height: auto;
+}
+#viewport {
+    position: absolute;
+}
+
+.container {
+    background-color: #fafafa;
+}
+
+@media (min-width: 360px) {
+    .columns.is-mobile {
+        max-height: calc(190px + 3.5rem);
+    }
+}
+
+@media (min-width: 768px) {
+    .columns.is-mobile {
+        max-height: calc(325px + 3.5rem);
+    }
+}
+
+@media (min-width: 1080px) {
+    .columns.is-mobile {
+        max-height: calc(360px + 3.5rem);
+    }
+}
+
+@media (min-width: 1152px) {
+    .columns.is-mobile {
+        max-height: calc(480px + 3.5rem);
+    }
+}
+
+#fileInput {
+    display: none;
+}
+#webcam {
+    display: flex;
+    position: relative;
+    padding: 0;
+    margin: 1.75rem;
+    margin-right: 1rem;
+    border-radius: 0;
+    background-color: white;
+}
+
+#previousPhotos {
+    margin: 1.75rem;
+    margin-left: 1rem;
+    border-radius: 0;
+    padding: 0;
+    overflow-y: scroll;
+}
+
+
+.column {
+    justify-content: center;
+    align-items: center;
+}
+.masksSelect {
+    overflow: auto;
+    margin: 0 1rem;
+    padding-bottom: 0;
+}
+
+.buttons:last-child {
+    margin-bottom: auto;
+}
+
+[type=radio] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+/* IMAGE STYLES */
+[type=radio] + img {
+    cursor: pointer;
+}
+/* CHECKED STYLES */
+[type=radio]:checked + img {
+    outline: 2px solid #f00;
+}

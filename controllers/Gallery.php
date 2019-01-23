@@ -8,14 +8,22 @@
 
 class Gallery
 {
-    public $img;
+    public $imgs;
+    public $photos;
 
     public function __construct()
     {
-        $this->img = 42;
+        require_once(ROOT . '/models/Photos.php');
+        if (isset($_SESSION['logged_user'])) {
+            $usr = $_SESSION['logged_user'];
+        } else {
+            $usr = NULL;
+        }
+        $this->imgs = new Photos($usr);
     }
     public function actionDisplay()
     {
-        echo$this->img."<br></br>";
+        $this->photos = $this->imgs->getPhotos(NULL);
+        require_once(ROOT.'/views/homepage.php');
     }
 }
