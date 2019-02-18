@@ -24,7 +24,9 @@
                     echo '<a class="navbar-item" href="/login">login</a>';
                 }?>
                 <a class="navbar-item" href="/editor">editor</a>
-                <a class="navbar-item" href="/logout">logout</a>
+                    <?php if (isset($_SESSION['logged_user'])) {
+                        echo '<a class="navbar-item" href="/logout">logout</a>';
+                    }?>
                 </div>
                 <div class="navbar-end"></div>
             </div>

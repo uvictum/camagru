@@ -9,80 +9,108 @@
 class User
 {
     public $pdo;
+   // private $validator;
+    private $ID;
+    private $Login;
+    private $Pass;
+    private $Email;
+    private $Hash;
+    private $Notify;
+    private $Activate;
+    private $updateLine;
 
-    public function __construct()
+    public function __construct($ID, $Login, $Pass, $Email, $Hash)
     {
         $this->pdo = ConnectDatabase::ConnectDB();
+        $this->updateLine  = Array();
+       // $this->validator = new Validator();
+        if (!empty($ID)) {
+            $this->ID = $ID;
+            $this->setUserData();
+        } elseif (!empty($Login) && !empty($Pass)) {
+            $this->checkUserExists($Login, $Pass);
+        } elseif (!empty($Email) && !empty($Hash)) {
+            $this->activateUserEx($Email, $Hash);
+        } elseif (!empty($Email) && !empty($Login)) {
+            $this->checkLogEmail($Login, $Email);
+        } else {
+            throw new Exception("Empty data was submitted");
+        }
     }
 
-    public function createNew(array $userdata, $token)
+    public function __get($name)
     {
-        $sql = "INSERT INTO Users(Login, Pass, Email, Hash) VALUES (:Username, :Pass, :Email, :Hash)";
-        $userdata['Pass'] = hash('whirlpool', $userdata['Pass']);
-        $userdata['Hash'] = $token;
-        print_r($userdata);
-        $statement = $this->pdo->prepare($sql);
-        $statement->execute($userdata);
+        return $this->$name;
     }
 
-    public function getUserData($login)
+    public function __set($name, $value)
     {
-        $sql = "SELECT * FROM Users WHERE Login = :login OR Email = :email";
+        $this->$name = $value;
+        $this->updateLine[] = $name; //функция добавить в массив элемент
+    }
+
+    public function saveUser()
+    {
+        if ($this->ID) {
+            $sql = "UPDATE Users$this->updateLine SET $this->updateLine WHERE ID = :ID";
+            $userdata = $this->bindParams(Array());
+            $statement = $this->pdo->prepare($sql);
+            $statement->execute($userdata);
+        } else {
+            $sql = "INSERT INTO Users(Login, Pass, Email, Hash) VALUES (:Login, :Pass, :Email, :Hash)";
+            $this->updateLine = Array("Login", "Pass", "Email", "Hash");
+            $userdata = $this->bindParams(Array());
+            //var_dump($userdata);
+            $userdata[':Pass'] = hash('whirlpool', $userdata[':Pass']);
+            $statement = $this->pdo->prepare($sql);
+            $statement->execute($userdata);
+        }
+    }
+
+    private function setUserData()
+    {
+        $sql = "SELECT * FROM Users WHERE ID = :ID";
         $statement = $this->pdo->prepare($sql);
-        $statement->execute(array(':login' => $login, 'email' => $login));
+        $statement->execute(array(':ID' => $this->ID));
         $userdata = $statement->fetch(PDO::FETCH_ASSOC);
+        $this->bindParams($userdata);
+    }
+
+    private function bindParams($userdata)
+    {
+        if (!empty($userdata)) {
+            foreach ($userdata as $key => $val) {
+                $this->$key = $val;
+            }
+        } else {
+            foreach ($this->updateLine as $item) {
+                $userdata[':' . $item] = $this->$item;
+            }
+        }
         return $userdata;
     }
 
-    public function checkUser()
+    private function checkUserExists($Login, $Pass)
     {
         $sql = "SELECT * FROM Users WHERE Login = :login AND Pass = :pass";
         $statement = $this->pdo->prepare($sql);
-        $statement->execute(array(':login' => $_POST['username'], ':pass' => hash('whirlpool', $_POST['pass'])));
-        $newuser = $statement->fetch(PDO::FETCH_ASSOC);
-        if (!empty($newuser)) {
-            if ($newuser['ID'] == $_SESSION['logged_user']) {
-                return 3;
-            }
-            if ($newuser['Activate'] == 1) {
-                return 1;
-            }
-            else {
-                return 2;
-            }
+        $statement->execute(array(':login' => $Login, ':pass' => hash('whirlpool', $Pass)));
+        $userdata = $statement->fetch(PDO::FETCH_ASSOC);
+        if (empty($userdata)) {
+            throw new Exception("Wrong login or password");
         }
-        else {
-            return 0;
-        }
+        $this->bindParams($userdata);
     }
 
-    public static function checkLogEmail($username, $email)
+    private function activateUserEx($email, $token)
     {
-        $sql = "SELECT COUNT(*) FROM Users WHERE Login = :login OR Email = :email";
-        $pdo = ConnectDatabase::ConnectDB();
-        $statement = $pdo->prepare($sql);
-        $statement->execute(array(':login' => $username, ':email' => $email));
-        if ($statement->fetchColumn() == 1) {
-            return 1;
-        }
-        else {
-            return 0;
-        }
-    }
-
-    public function activateUser($email, $token)
-    {
-        $sql = "UPDATE Users SET Activate = 1 WHERE Email = :email AND Hash = :token";
+        $sql = "SELECT * FROM Users WHERE Email = :email AND Hash = :token";
         $statement = $this->pdo->prepare($sql);
         $statement->execute(array(':email' => $email, ':token' => $token));
-        return $statement->rowCount();
-    }
-
-    public function updateUser($userid, $newvalue, $field)
-    {
-        $sql = "UPDATE Users SET ".ucfirst($field)."=:val WHERE ID = :id";
-        $statement = $this->pdo->prepare($sql);
-        $statement->execute(array(':val' => $newvalue, ':id' => $userid));
-        return $statement->rowCount();
+        $userdata = $statement->fetch(PDO::FETCH_ASSOC);
+        if (empty($userdata)) {
+            throw new Exception("token expired or invalid");
+        }
+        $this->bindParams($userdata);
     }
 }

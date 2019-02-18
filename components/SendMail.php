@@ -27,7 +27,7 @@ class SendMail
             Your account has been created, you can login with the following credentials after you have activated your account by pressing the url below.
              
             ------------------------
-            Username: ' . $userdata['Username'] . '
+            Username: ' . $userdata['Login'] . '
             Password: ' . $userdata['Pass'] . '
             ------------------------
              

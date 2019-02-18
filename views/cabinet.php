@@ -26,33 +26,44 @@
 </div>
 <div class="column is-half is-offset-3">
     <div class="field">
-        <label class="label">Change Username</label>
+        <label for="login" class="label">Change Username</label>
         <div class="control">
-            <input class="input" type="text" placeholder="<?php echo $_SESSION['login']?>">
+            <input id="login" class="input" type="text" value="<?php echo $this->userdata['Login']?>">
         </div>
     </div>
 
     <div class="field">
-        <label class="label">Change Email</label>
+        <label for="email" class="label">Change Email</label>
         <div class="control">
-            <input class="input" type="email" placeholder="Email input">
+            <input id="email" class="input" type="email" value="<?php echo $this->userdata['Email']?>">
         </div>
     </div>
 
     <div class="field">
-        <label class="label">Change Password</label>
+        <label for="pass" class="label">Change Password</label>
         <div class="control">
-            <input class="input" type="password">
+            <input id="pass" class="input" type="password">
         </div>
     </div>
 
     <div class="field">
-        <label class="label">Notify about new comments?</label>
+        <label for="passrepeat" class="label">Repeat Password</label>
         <div class="control">
-            <div class="select">
-                <select>
+            <input id="passrepeat" class="input" type="password">
+        </div>
+    </div>
+
+    <div class="field">
+        <label for="notify" class="label">Notify about new comments?</label>
+        <div class="control">
+                <select id="notify">
+                    <?php if($this->userdata['Notify'] == 1) :?>
                     <option>Yes</option>
                     <option>No</option>
+                    <?php else :?>
+                    <option>No</option>
+                    <option>Yes</option>
+                    <?php endif; ?>
                 </select>
             </div>
         </div>

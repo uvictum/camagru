@@ -13,7 +13,7 @@ class Comments
      * @throws Exception
      */
 
-    public $pdo;
+    private $pdo;
 
     public function __construct()
     {

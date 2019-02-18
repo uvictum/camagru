@@ -8,7 +8,7 @@
 
 class Likes
 {
-    public $pdo;
+    private $pdo;
 
     public function __construct()
     {
