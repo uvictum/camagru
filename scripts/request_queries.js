@@ -9,11 +9,12 @@ function dataRequest(formData, callbackFunc, handler) {
 
 function displayRequest(request) {
 
-    if (request.status != 200) {
+    if (request.status !== 200) {
         alert(request.status + ': ' + request.statusText);
         alert(request.responseText);
     } else {
         alert('status: ' + request.readyState + ' response :' + request.responseText);
+        //location.reload();
     }
 }
 
@@ -23,4 +24,12 @@ function xhrSuccess() {
 
 function xhrFail() {
     alert('status error: ' + this.readyState);
+}
+
+let logout = document.getElementById('logout');
+
+if (logout) {
+    logout.addEventListener('click', function () {
+        dataRequest('', displayRequest, 'logout');
+    })
 }

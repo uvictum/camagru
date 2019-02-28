@@ -23,7 +23,6 @@ class Router
                 $controllerObject = new $className;
                 //include (ROOT.'/views/header.php');
                 $controllerObject->$actionName();
-                //include (ROOT.'/views/footer.php');
 				break;
 			}
 		}

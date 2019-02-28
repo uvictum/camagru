@@ -18,7 +18,7 @@ class Editor
             require_once(ROOT . '/models/Photos.php');
             $this->photo = new Photos($_SESSION['logged_user']);
         } else {
-            $this->view = ROOT . '/views/must_login.php';
+            $this->view = ROOT . '/views/signin.php';
         }
     }
 

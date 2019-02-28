@@ -15,21 +15,21 @@ class Registration
 
     public function actionSignup() //допилить верификацию и отлов эксепшенов, убрать двойной иф
     {
-        include_once (ROOT.'/views/signup.php');
-        if ($_POST) {
-            if ($_POST['submit'] == 'signup') {
-                $user = new User(null,null, null, null, null);
-                $user->Login = $_POST['username'];
-                $user->Email = $_POST['email'];
-                $user->Pass = $_POST['pass'];
-                $token = bin2hex(openssl_random_pseudo_bytes(16));
-                $user->Hash = $token;
+        if (!empty($_POST)) {
+            $token = bin2hex(openssl_random_pseudo_bytes(16));
+            $user = new User(null, $_POST['username'], $_POST['pass'], $_POST['email'], $token);
+            try {
                 $user->saveUser();
                 require_once(ROOT.'/components/SendMail.php');
                 $newmessage = new SendMail(Array('Login' => $user->Login, 'Email' =>$user->Email,
-                    'Pass' =>$user->Pass), $token);
+                    'Pass' => $user->Pass), $token);
                 $newmessage->sendEmail();
+            } catch (Exception $err) {
+                header('HTTP/1.0 400 Bad error');
+                echo $err->getMessage();
             }
+        } else {
+            require_once (ROOT.'/views/signup.php');
         }
     }
 

@@ -16,10 +16,10 @@ class Cabinet
     {
         if (!empty($_SESSION['login'])) {
             require_once (ROOT. '/models/User.php');
-            $this->user = new User($_SESSION['ID'], null, null, null, null);
+            $this->user = new User($_SESSION['logged_user'], null, null, null, null);
             $this->view = ROOT . '/views/cabinet.php';
         } else {
-            $this->view = ROOT. '/views/must_login.php';
+            $this->view = ROOT. '/views/signin.php';
         }
     }
 
@@ -30,9 +30,9 @@ class Cabinet
 
     public function actionUpdate()
     {
-        if (!empty($_POST['submit'])) {
+        if (!empty($_POST['Login'])) {
            foreach ($_POST as $key => $value) {
-               if (array_key_exists($key, Cabinet::$userdata)) {
+               if (in_array($key, Cabinet::$userdata)) {
                    $this->user->$key = $value;
                }
            }
@@ -42,7 +42,8 @@ class Cabinet
                echo $err->getMessage();
                return;
            }
-           echo "Properties successfully changed <br/>";
+           echo "Properties successfully changed";
+           $_SESSION['login'] = $this->user->Login;
         }
     }
 }

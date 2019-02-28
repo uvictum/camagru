@@ -5,7 +5,7 @@ class Setup
 
     public function __construct()
     {
-        require_once(ROOT.'/config/database.php');
+        require (ROOT.'/config/database.php');
         try {
             $this->pdo = new PDO("mysql:localhost", $DB_USER, $DB_PASSWORD);
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);

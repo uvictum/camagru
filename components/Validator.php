@@ -8,32 +8,71 @@
 
 class Validator
 {
-    //If the name field is not empty  and If the name is not to short or contain escaped characters
-if (isset($_POST['username']) && !empty($_POST['username'])
-AND strlen($_POST['username']) >= 3
-&& preg_match("'^[A-z0-9\-_\.]+$'", $_POST['username'])) {
-if (isset($_POST['email']) && !empty($_POST['email'])
-AND preg_match("'^[_A-z0-9-]+(\.[_A-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$'", $_POST['email'])) {
-if (!isset($_POST['pass']) || empty($_POST['pass'])) {
-echo "empty password please change it and resubmit";
-return 0;
-}
-elseif (User::checkLogEmail($_POST['username'],$_POST['email'])) {
-                        echo "such email or login already exists";
-                        return 0;
-                    }
-                    else {
-    return 1;
-}
-                }
-                else {
-    echo "incorrect email please change it and resubmit";
-    return 0;
-}
+    private $params;
+    private $object;
+    private static $paramNames = Array('Login', 'Email', 'Pass');
+
+    public function __construct($params_name, $object)
+    {
+        $this->params = $params_name;
+        $this->object = $object;
+    }
+
+    public function __call($name, $arguments)
+    {
+        // TODO: Implement __call() method.
+    }
+
+    public function validateParams()
+    {
+        foreach ($this->params as $param) {
+            if (in_array($param, Validator::$paramNames)) {
+                $method = "validate$param";
+                $this->$method();
             }
-            else {
-    echo "incorrect username please change it and resubmit";
-    return 0;
-}
+        }
+    }
+
+    private function validateLogin()
+    {
+        $login = $this->object->Login;
+        if (!preg_match("/^([a-zA-Z](?:(?:(?:\w[\.\_]?)*)\w)+)([a-zA-Z0-9])$/", $login)) {
+            throw new Exception("Login contains prohibited symbols");
+        }
+        if (strlen($login) > 16) {
+            throw new Exception("Login is too long!");
+        }
+        if (!$this->object->checkUnique('Login', $login)) {
+            throw new Exception("This login is in use");
+        }
+    }
+
+    private function validatePass()
+    {
+        $pass = $this->object->Pass;
+        if (strlen($pass) < 8) {
+            throw new Exception("This password is too short");
+        }
+        if (strlen($pass) > 15) {
+            throw new Exception("This password is too long");
+        }
+        if (!preg_match("/^([a-zA-Z0-9@*#]{8,15})$/", $pass)) {
+            throw new Exception("This password is not strong enough");
+        }
+    }
+
+    private function validateEmail()
+    {
+        $email = $this->object->Email;
+        if (!preg_match("/^[\w-_\.]+@([\w-_]+\.)+[\w-]{2,4}$/", $email)) {
+            throw new Exception("Wrong email format!");
+        }
+        if (strlen($email) > 64) {
+            throw new Exception("Email is too long!");
+        }
+        if (!$this->object->checkUnique('Email', $email)) {
+            throw new Exception("This email is already registred");
+        }
+    }
 
 }

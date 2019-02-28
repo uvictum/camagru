@@ -82,51 +82,36 @@
                     <div class="content">
                         <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
                     </div>
-                    <?php if (!empty($comments)) :?>
-                    <?php foreach ($comments as $comment) :?>
-                    <article class="media">
-                        <figure class="media-left">
-                            <p class="image is-64x64">
-                                <img src="https://bulma.io/images/placeholders/128x128.png">
-                            </p>
-                        </figure>
-                        <div class="media-content">
-                            <div class="content">
-                                <p>
-                                    <strong><?php //print_r($comments);
-                                        echo $comment['Login']?></strong>
-                                    <br>
-                                    <?php echo $comment['Text']?>
-                                    <br>
-                                    <small><a>Like</a> · <a>Reply</a> · 3 hrs</small>
-                                </p>
-                            </div>
-                        </div>
-                    </article>
-                    <?php endforeach; ?>
-                    <?php endif; ?>
-                    <div class="field">
-                    <article class="media">
-                        <div class="media-content">
-                            <div class="field">
-                                <p class="control">
-                                    <textarea id="commentText" class="textarea" placeholder="Add a comment..."></textarea>
-                                </p>
-                                <p class="help is-danger is-hidden" id="commentHelper"></p>
-                            </div>
-                            <nav class="level">
-                                <div class="level-left">
-                                    <div class="level-item">
-                                        <a class="button is-info" id="commentBtn">Submit</a>
-                                    </div>
+                    <?php
+                    if (!empty($comments)) {
+                        foreach ($comments as $comment) {
+                            include (ROOT .'/views/tpls/comment.tpl.php');
+                        }
+                    }
+                    if (!empty($_SESSION['logged_user'])) :?>
+                    <div id="comment_field" class="field">
+                        <article class="media">
+                            <div class="media-content">
+                                <div class="field">
+                                    <p class="control">
+                                        <textarea id="commentText" class="textarea" placeholder="Add a comment..."></textarea>
+                                    </p>
+                                    <p class="help is-danger is-hidden" id="commentHelper"></p>
                                 </div>
-                            </nav>
-                        </div>
-                    </article>
+                                <nav class="level">
+                                    <div class="level-left">
+                                        <div class="level-item">
+                                            <a class="button is-info" id="commentBtn">Submit</a>
+                                        </div>
+                                    </div>
+                                </nav>
+                            </div>
+                        </article>
+                    </div>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
-    </div>
     </div>
     <footer class="footer is-fixed-bottom">
         <div class="content has-text-centered">
@@ -137,4 +122,5 @@
 </body>
 <script src="/scripts/request_queries.js"></script>
 <script src="/scripts/comment_script.js"></script>
+<script src="/scripts/like_script.js"></script>
 </html>

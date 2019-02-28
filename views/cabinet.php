@@ -24,51 +24,46 @@
         <div class="navbar-end"></div>
     </div>
 </div>
+<form>
 <div class="column is-half is-offset-3">
     <div class="field">
         <label for="login" class="label">Change Username</label>
         <div class="control">
-            <input id="login" class="input" type="text" value="<?php echo $this->userdata['Login']?>">
+            <input id="login" name="Login" class="input" type="text" value="<?php echo $this->user->Login ?>">
         </div>
     </div>
-
     <div class="field">
         <label for="email" class="label">Change Email</label>
         <div class="control">
-            <input id="email" class="input" type="email" value="<?php echo $this->userdata['Email']?>">
+            <input id="email" name="Email" class="input" type="email" value="<?php echo $this->user->Email ?>">
         </div>
     </div>
-
     <div class="field">
         <label for="pass" class="label">Change Password</label>
         <div class="control">
-            <input id="pass" class="input" type="password">
+            <input id="pass" name="Pass" class="input" type="password">
         </div>
     </div>
-
     <div class="field">
         <label for="passrepeat" class="label">Repeat Password</label>
         <div class="control">
             <input id="passrepeat" class="input" type="password">
         </div>
     </div>
-
     <div class="field">
         <label for="notify" class="label">Notify about new comments?</label>
         <div class="control">
-                <select id="notify">
-                    <?php if($this->userdata['Notify'] == 1) :?>
-                    <option>Yes</option>
-                    <option>No</option>
+                <select id="notify" name="Notify">
+                    <?php if($this->user->Notify == 1) :?>
+                    <option value="1">Yes</option>
+                    <option value="0">No</option>
                     <?php else :?>
-                    <option>No</option>
-                    <option>Yes</option>
+                    <option value="0">No</option>
+                    <option value="1">Yes</option>
                     <?php endif; ?>
                 </select>
             </div>
-        </div>
     </div>
-
     <div class="field is-grouped">
         <div class="control">
             <button class="button is-link">Submit</button>
@@ -78,6 +73,7 @@
         </div>
     </div>
 </div>
+</form>
     <footer class="footer is-fixed-bottom">
         <div class="content has-text-centered">
             &copy; 2018 <span class="has-text-weight-semibold">by vmorguno</span> at UNIT Factory</br>
@@ -85,5 +81,6 @@
         </div>
     </footer>
 </body>
-<script src="/scripts/editor_script.js"></script>
+<script src="/scripts/cabinet_script.js"></script>
+<script src="/scripts/request_queries.js"></script>
 </html>

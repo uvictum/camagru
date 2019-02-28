@@ -14,34 +14,54 @@ class Comments
      */
 
     private $pdo;
+    private $ID;
+    private $image;
+    private $userID;
+    private $text;
+    private $login;
 
     public function __construct()
     {
         $this->pdo = ConnectDatabase::ConnectDB();
     }
 
-    public function getComments($id)
+    public function __set($name, $value)
     {
-        $sql = "SELECT Users.Login, Comments.Text, Comments.Postdate FROM Comments LEFT JOIN Users ON Comments.UserID = Users.ID WHERE Comments.ImageID = :id";
+        $this->$name = $value;
+    }
+
+    public function __get($name)
+    {
+        return $this->$name;
+    }
+
+    public function getComments()
+    {
+        $sql = "SELECT Users.Login, Comments.Text, Comments.Postdate, Comments.ID FROM Comments LEFT JOIN Users ON Comments.UserID = Users.ID WHERE Comments.ImageID = :id";
         $statement = $this->pdo->prepare($sql);
-        $statement->execute(array(':id' => $id));
+        $statement->execute(array(':id' => $this->image));
         $comments = $statement->fetchAll();
         return($comments);
     }
 
-    public function saveComment($img, $usr, $txt, $login)
+    public function saveComment()
     {
-        try {
-            $this->checkComment($txt);
-            $sql = "INSERT INTO Comments (UserID, ImageID, Text) VALUES (:UserID, :ImageID, :Text)";
-            $statement = $this->pdo->prepare($sql);
-            $statement->execute(array(':UserID' => $usr, ':ImageID' => $img, ':Text' => $txt));
-            print(json_encode(array($login, $txt)));
-        } catch (Exception $error) {
-            header('HTTP/1.0 400 Bad error');
-            echo $error->getMessage();
-        }
+        $this->checkComment($this->text);
+        $sql = "INSERT INTO Comments (UserID, ImageID, Text) VALUES (:UserID, :ImageID, :Text)";
+        $statement = $this->pdo->prepare($sql);
+        $statement->execute(array(':UserID' => $this->userID, ':ImageID' => $this->image, ':Text' => $this->text));
+        $this->ID = $this->pdo->lastInsertId();
 
+    }
+
+    public function removeComment()
+    {
+        $sql = "DELETE FROM Comments WHERE ID = :ID AND UserID = :UserID";
+        $statement = $this->pdo->prepare($sql);
+        $statement->execute(array(':ID' => $this->ID, ':UserID' => $this->userID));
+        if (!$statement->rowCount()) {
+            throw new Exception('Nothing was deleted');
+        }
     }
 
     private function checkComment($txt)

@@ -25,7 +25,7 @@
                 }?>
                 <a class="navbar-item" href="/editor">editor</a>
                     <?php if (isset($_SESSION['logged_user'])) {
-                        echo '<a class="navbar-item" href="/logout">logout</a>';
+                        echo '<a class="navbar-item" id="logout">logout</a>';
                     }?>
                 </div>
                 <div class="navbar-end"></div>
@@ -54,4 +54,6 @@
         </div>
     </footer>
 </body>
+<script src="/scripts/request_queries.js"></script>
+<script src="/scripts/like_script.js"></script>
 </html>

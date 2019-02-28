@@ -9,7 +9,6 @@
 class User
 {
     public $pdo;
-   // private $validator;
     private $ID;
     private $Login;
     private $Pass;
@@ -23,10 +22,14 @@ class User
     {
         $this->pdo = ConnectDatabase::ConnectDB();
         $this->updateLine  = Array();
-       // $this->validator = new Validator();
         if (!empty($ID)) {
             $this->ID = $ID;
             $this->setUserData();
+        } elseif (!empty($Login) && !empty($Pass) && !empty($Email) && !empty($Hash)) {
+            $this->Login = $Login;
+            $this->Pass = $Pass;
+            $this->Email = $Email;
+            $this->Hash = $Hash;
         } elseif (!empty($Login) && !empty($Pass)) {
             $this->checkUserExists($Login, $Pass);
         } elseif (!empty($Email) && !empty($Hash)) {
@@ -45,26 +48,45 @@ class User
 
     public function __set($name, $value)
     {
-        $this->$name = $value;
-        $this->updateLine[] = $name; //функция добавить в массив элемент
+        if ($this->$name != $value && strlen($value)) {
+            $this->updateLine[] = $name;
+            $this->$name = $value;
+        } elseif ($name != 'Pass' && !strlen($value)) {
+            throw new Exception("Empty $name was passed!");
+        }
     }
 
     public function saveUser()
     {
         if ($this->ID) {
-            $sql = "UPDATE Users$this->updateLine SET $this->updateLine WHERE ID = :ID";
-            $userdata = $this->bindParams(Array());
-            $statement = $this->pdo->prepare($sql);
-            $statement->execute($userdata);
+            $params = $this->updateLineTransform();
+            if (empty($params)) {
+                throw new Exception('Nothing to change');
+            }
+            $sql = "UPDATE Users SET $params WHERE ID = $this->ID";
         } else {
             $sql = "INSERT INTO Users(Login, Pass, Email, Hash) VALUES (:Login, :Pass, :Email, :Hash)";
             $this->updateLine = Array("Login", "Pass", "Email", "Hash");
-            $userdata = $this->bindParams(Array());
-            //var_dump($userdata);
-            $userdata[':Pass'] = hash('whirlpool', $userdata[':Pass']);
-            $statement = $this->pdo->prepare($sql);
-            $statement->execute($userdata);
         }
+        require_once (ROOT. '/components/Validator.php');
+        $validator = new Validator($this->updateLine, $this);
+        $validator->validateParams();
+        $userdata = $this->bindParams(Array());
+        $statement = $this->pdo->prepare($sql);
+        $statement->execute($userdata);
+    }
+
+    private function updateLineTransform()
+    {
+        $params = '';
+        $counter = 0;
+        $total = count($this->updateLine);
+        foreach ($this->updateLine as $item) {
+            $counter++;
+            $params .= "$item = :$item";
+            $params .= $counter == $total ? '' : ', ';
+        }
+        return $params;
     }
 
     private function setUserData()
@@ -86,8 +108,23 @@ class User
             foreach ($this->updateLine as $item) {
                 $userdata[':' . $item] = $this->$item;
             }
+            if (array_key_exists('Pass', $userdata)) {
+                $userdata[':Pass'] = hash('whirlpool', $userdata[':Pass']);
+            }
         }
         return $userdata;
+    }
+
+    public function checkUnique($param, $value)
+    {
+        $sql = "SELECT $param FROM Users WHERE $param = :param";
+        $statement = $this->pdo->prepare($sql);
+        $statement->execute(array(':param' => $value));
+        $userdata = $statement->fetch(PDO::FETCH_ASSOC);
+        if (empty($userdata)) {
+            return true;
+        }
+        return false;
     }
 
     private function checkUserExists($Login, $Pass)
@@ -112,5 +149,21 @@ class User
             throw new Exception("token expired or invalid");
         }
         $this->bindParams($userdata);
+    }
+
+    private function checkLogEmail($Login, $Email)
+    {
+        if ($Login === $Email) {
+            $sql = "SELECT * FROM Users WHERE Login = :login OR Email = :login";
+            $statement = $this->pdo->prepare($sql);
+            $statement->execute(array(':login' => $Login));
+            $userdata = $statement->fetch(PDO::FETCH_ASSOC);
+            if (empty($userdata)) {
+                throw new Exception("This user doesn't exist");
+            }
+            $this->bindParams($userdata);
+        } else {
+            throw new Exception("Wrong data submitted");
+        }
     }
 }

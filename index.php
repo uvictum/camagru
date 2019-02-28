@@ -19,5 +19,3 @@ else {
     $router = new Router;
     $router->chooseRoute();
 }
-?>
-
