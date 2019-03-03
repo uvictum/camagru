@@ -16,12 +16,12 @@
                             <nav class="level is-mobile">
                                 <div class="level-left">
                                     <p class="level-item">
-                                        Likes: <?php echo $img['Likes']?>
+                                        Likes: <?php echo $img['Likes'];?>
                                     </p>
                                     <a class="level-item">
                                 <span class="icon is-small">
-                                    <svg class="icon">
-                                        <use xlink:href="#heart-1" />
+                                    <svg class="icon like<?php if (in_array($img['ID'], $liked)) { echo 'd'; }?>_symbol" id="img_<?php echo $img['ID']?>">
+                                            <use xlink:href="#heart<?php if (!in_array($img['ID'], $liked)) { echo '-1'; }?>" />
                                     </svg>
                                 </span>
                                     </a>

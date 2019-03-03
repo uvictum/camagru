@@ -49,8 +49,8 @@
                                 </p>
                                 <a class="level-item">
                                     <span class="icon is-small">
-                                        <svg class="icon">
-                                            <use xlink:href="#heart-1" />
+                                        <svg class="icon like<?php if ($liked > 0) { echo 'd'; }?>_symbol" id="img_<?php echo $photo['ID']?>">
+                                            <use xlink:href="#heart<?php if ($liked == 0) { echo '-1'; }?>" />
                                         </svg>
                                     </span>
                                 </a>

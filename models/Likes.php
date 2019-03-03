@@ -21,9 +21,18 @@ class Likes
 
     public function getLikes()
     {
-        $sql = "SELECT FROM Likes (UserID, ImageID) WHERE UserID = :UserID AND ImageID = :ImageID)";
+        $sql = "SELECT ImageID FROM Likes WHERE UserID = :UserID";
+        $statement = $this->pdo->prepare($sql);
+        $statement->execute(array(':UserID' => $this->usr));
+        return $statement->fetchAll(PDO::FETCH_COLUMN);
+    }
+
+    public function getLike()
+    {
+        $sql = "SELECT * FROM Likes WHERE UserID = :UserID AND ImageID = :ImageID";
         $statement = $this->pdo->prepare($sql);
         $statement->execute(array(':UserID' => $this->usr, ':ImageID' => $this->img));
+        return $statement->rowCount();
     }
 
     public function addLike()
@@ -35,7 +44,7 @@ class Likes
 
     public function removeLike()
     {
-        $sql = "DELETE FROM Likes WHERE UserID = :usr AND ImageID = :img)";
+        $sql = "DELETE FROM Likes WHERE UserID = :usr AND ImageID = :img";
         $statement = $this->pdo->prepare($sql);
         $statement->execute(array(':usr' => $this->usr, ':img' => $this->img));
     }

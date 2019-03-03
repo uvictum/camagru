@@ -1,4 +1,4 @@
-window.onload = function () {
+
     let commentBtn = document.getElementById('commentBtn');
     let deleteCmnt = document.querySelectorAll('a.link');
     let image = document.querySelector('div.card-image img');
@@ -74,5 +74,4 @@ window.onload = function () {
             alert('Comment was deleted');
         }
     }
-};
 

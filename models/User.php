@@ -108,7 +108,7 @@ class User
             foreach ($this->updateLine as $item) {
                 $userdata[':' . $item] = $this->$item;
             }
-            if (array_key_exists('Pass', $userdata)) {
+            if (array_key_exists(':Pass', $userdata)) {
                 $userdata[':Pass'] = hash('whirlpool', $userdata[':Pass']);
             }
         }

@@ -18,6 +18,8 @@ function displayRequest(request) {
     }
 }
 
+
+
 function xhrSuccess() {
    this.callback(this);
 }

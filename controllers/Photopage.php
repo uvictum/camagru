@@ -8,7 +8,7 @@
 
 class Photopage
 {
-    public $commentsModel;
+    private $commentsModel;
 
     public function __construct()
     {
@@ -25,6 +25,12 @@ class Photopage
         $photo = $photoModel->getPhoto($_GET['image']);
         if (isset($photo)) {
             $comments = $this->commentsModel->getComments();
+            if (!empty($_SESSION['logged_user'])) {
+                require (ROOT . '/models/Likes.php');
+                $like = new Likes($photo['ID'], $_SESSION['logged_user']);
+                $liked = $like->getLike();
+            }
+
             require_once(ROOT.'/views/single_photo.php');
         }
         else {
@@ -99,6 +105,9 @@ class Photopage
             require (ROOT . '/models/Likes.php');
             $likeModel = new Likes($_POST['image'], $_SESSION['logged_user']);
             $likeModel->addLike();
+            $response['op'] = 1;
+            $response['img'] = $_POST['image'];
+            echo json_encode($response);
         }
     }
 
@@ -109,6 +118,9 @@ class Photopage
             require (ROOT . '/models/Likes.php');
             $likeModel = new Likes($_POST['image'], $_SESSION['logged_user']);
             $likeModel->removeLike();
+            $response['op'] = 2;
+            $response['img'] = $_POST['image'];
+            echo json_encode($response);
         }
     }
 

@@ -38,6 +38,15 @@ class Login
         $_SESSION['login'] = $user->Login;
     }
 
+    public function actionCheckAuth()
+    {
+        if (!empty($_SESSION['logged_user'])) {
+            header("HTTP/1.0 200 OK");
+        } else {
+            header("HTTP/1.0 403 Forbidden");
+        }
+    }
+
     public function actionLogout()
     {
         if ($_SESSION && isset($_SESSION['logged_user'])) {
