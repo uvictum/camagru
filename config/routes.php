@@ -16,4 +16,5 @@ return array(
         "'^\/delete$'" => "photopage/removePhoto",
         "'^\/like$'" => "photopage/addLike",
         "'^\/unlike$'" => "photopage/removeLike",
-        "'^\/auth$'" => "login/checkAuth");
+        "'^\/auth$'" => "login/checkAuth",
+        "'^\/resend\/([?=A-z0-9;_\%@.&]+)'" => "registration/sendActivationLink");

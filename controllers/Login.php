@@ -32,7 +32,7 @@ class Login
         }
         $user = new User(null, $_POST['username'], $_POST['pass'], null, null);
         if ($user->Activate != 1) {
-            throw new Exception("User was not activated <a href='../resend/?login=".$_POST['username'].">Resend confirmation link?</a>");
+            throw new Exception('User was not activated <a href="/resend/?login='.$_POST['username'].'">Resend confirmation link?</a>');
         }
         $_SESSION['logged_user'] = $user->ID;
         $_SESSION['login'] = $user->Login;

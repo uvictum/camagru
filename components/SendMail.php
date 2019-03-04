@@ -11,6 +11,8 @@ class SendMail
     private $userdata;
     private $token;
     public $messagetype = 0;
+    private $emailtext;
+    private static $mailsubjects = array("Finish Registration to Camagru", "Here is reset link for Camagru");
 
     public function __construct($userdata, $token)
     {
@@ -22,7 +24,7 @@ class SendMail
     {
         $emailtext = 'Hello!';
         if ($this->messagetype == 0) {
-            $emailtext = ' 
+            $this->emailtext = ' 
             Thanks for signing up!
             Your account has been created, you can login with the following credentials after you have activated your account by pressing the url below.
              
@@ -31,15 +33,18 @@ class SendMail
             Password: ' . $userdata['Pass'] . '
             ------------------------
              
-            Please click this link to activate your account:
-            http://localhost:8200/verify/?email=' . $userdata['Email'] . '&token=' . $token . '';
+            Please click this link to activate your account:'.
+            $_SERVER['HTTP_HOST'] .'/verify/?email='. $userdata['Email'] . '&token=' . $token . '';
         }
         elseif ($this->messagetype == 1) {
-            $emailtext = ' 
+            $this->emailtext = ' 
             Please click this link to reset your account password:
             http://localhost:8200/resetpass/?email='.$userdata['Email'].'&token='.$token.'';
         }
-        return($emailtext);
+        elseif ($this->messagetype == 2) {
+            $this->emailtext = ' 
+            Your photo has received new comment';
+        }
     }
 
     public function sendEmail()
@@ -53,7 +58,7 @@ class SendMail
             "line-length" => 76,
             "line-break-chars" => "\r\n"
         );
-        $mailsubjects = array("Finish Registration to Camagru", "Here is reset link for Camagru");
+
         $from_name = "vmorguno";
         $from_mail = "uvictum@gmail.com";
         // Set mail header
@@ -63,8 +68,8 @@ class SendMail
         $header .= "Content-Transfer-Encoding: 8bit \r\n";
         $header .= "Date: ".date("r (T)")." \r\n";
         $header .= iconv_mime_encode("Subject", $mailsubjects[$this->messagetype], $subject_preferences);
-
+        $this->generateEmail($this->userdata, $this->token);
         // Send mail
-        mail($this->userdata['Email'], $mailsubjects[$this->messagetype], $this->generateEmail($this->userdata, $this->token), $header);
+        mail($this->userdata['Email'], SendMail::$mailsubjects[$this->messagetype], $this->emailtext, $header);
     }
 }

@@ -5,7 +5,7 @@ Pass VARCHAR(128) NOT NULL,
 Email CHAR(25) NOT NULL,
 Hash VARCHAR(32) NOT NULL,
 Notify int DEFAULT 1,
-Activate BIT);
+Activate int DEFAULT 0);
 
 CREATE TABLE Images (
 ID int NOT NULL AUTO_INCREMENT Primary key,
