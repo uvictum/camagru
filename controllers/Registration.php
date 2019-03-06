@@ -54,9 +54,10 @@ class Registration
         try {
             $user = new User(null, $_GET['login'], null, $_GET['login'], null);
             require_once(ROOT.'/components/SendMail.php');
-            $newmessage = new SendMail(Array('Login' => $user->Login, 'Email' =>$user->Email,
-                'Pass' => $user->Pass), $user->Hash);
+            $newmessage = new SendMail(Array('Login' => $user->Login, 'Email' =>$user->Email), $user->Hash);
+            $newmessage->messagetype = 3;
             $newmessage->sendEmail();
+            echo 'Email was sent!';
         } catch (Exception $err) {
             header('HTTP/1.0 400 Bad error');
             echo $err->getMessage();

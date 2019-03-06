@@ -44,3 +44,23 @@ INSERT INTO Masks (Link) VALUES ('images/masks/frames-circo-png.png');
 INSERT INTO Masks (Link) VALUES ('images/masks/meme-sunglasses.png');
 INSERT INTO Masks (Link) VALUES ('images/masks/christmas-frame-1916987_640.png');
 INSERT INTO Masks (Link) VALUES ('images/masks/troll.png');
+
+CREATE TRIGGER Comment_Added
+AFTER INSERT ON Comments
+FOR EACH ROW
+    UPDATE Images SET Images.Comments = Images.Comments + 1 WHERE Images.ID = NEW.ImageID;
+
+CREATE TRIGGER Comment_Removed
+BEFORE DELETE ON Comments
+FOR EACH ROW
+    UPDATE Images SET Images.Comments = Images.Comments - 1 WHERE Images.ID = OLD.ImageID;
+
+CREATE TRIGGER Like_Added
+AFTER INSERT ON Likes
+FOR EACH ROW
+    UPDATE Images SET Images.Likes = Images.Likes + 1 WHERE Images.ID = NEW.ImageID;
+
+CREATE TRIGGER Like_Removed
+BEFORE DELETE ON Likes
+FOR EACH ROW
+    UPDATE Images SET Images.Likes = Images.Likes - 1 WHERE Images.ID = OLD.ImageID;

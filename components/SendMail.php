@@ -12,7 +12,8 @@ class SendMail
     private $token;
     public $messagetype = 0;
     private $emailtext;
-    private static $mailsubjects = array("Finish Registration to Camagru", "Here is reset link for Camagru");
+    private static $mailsubjects = array("Finish Registration to Camagru", "Here is reset link for Camagru",
+                                           "Finish Registration to Camagru", "Your photo was commented on Camagru");
 
     public function __construct($userdata, $token)
     {
@@ -22,7 +23,6 @@ class SendMail
 
     private function generateEmail($userdata, $token)
     {
-        $emailtext = 'Hello!';
         if ($this->messagetype == 0) {
             $this->emailtext = ' 
             Thanks for signing up!
@@ -43,7 +43,11 @@ class SendMail
         }
         elseif ($this->messagetype == 2) {
             $this->emailtext = ' 
-            Your photo has received new comment';
+            Hello ' . $this->userdata['Login'] .
+            'Your photo '. $_SERVER['HTTP_HOST'] . $this->userdata['image_link'] .' has received new comment';
+        } elseif ($this->messagetype == 3) {
+            $this->emailtext = 'Please click this link to activate your account:'.
+            $_SERVER['HTTP_HOST'] .'/verify/?email='. $userdata['Email'] . '&token=' . $token . '';
         }
     }
 
@@ -60,14 +64,14 @@ class SendMail
         );
 
         $from_name = "vmorguno";
-        $from_mail = "uvictum@gmail.com";
+        $from_mail = "vmorguno@student.unit.ua";
         // Set mail header
         $header = "Content-type: text/html; charset=".$encoding." \r\n";
         $header .= "From: ".$from_name." <".$from_mail."> \r\n";
         $header .= "MIME-Version: 1.0 \r\n";
         $header .= "Content-Transfer-Encoding: 8bit \r\n";
         $header .= "Date: ".date("r (T)")." \r\n";
-        $header .= iconv_mime_encode("Subject", $mailsubjects[$this->messagetype], $subject_preferences);
+        $header .= iconv_mime_encode("Subject", SendMail::$mailsubjects[$this->messagetype], $subject_preferences);
         $this->generateEmail($this->userdata, $this->token);
         // Send mail
         mail($this->userdata['Email'], SendMail::$mailsubjects[$this->messagetype], $this->emailtext, $header);

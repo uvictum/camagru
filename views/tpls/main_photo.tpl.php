@@ -16,7 +16,7 @@
                             <nav class="level is-mobile">
                                 <div class="level-left">
                                     <p class="level-item">
-                                        Likes: <?php echo $img['Likes'];?>
+                                        <?php echo $img['Likes'];?>
                                     </p>
                                     <a class="level-item">
                                 <span class="icon is-small">
@@ -26,7 +26,7 @@
                                 </span>
                                     </a>
                                     <p class="level-item">
-                                        Comments: <?php echo $img['Comments']?>
+                                        <?php echo $img['Comments']?>
                                     </p>
                                     <a class="level-item">
                                 <span class="icon is-small">

@@ -7,10 +7,15 @@
     <link rel="stylesheet" href="/styles/bulma.min.css">
     <link rel="stylesheet" href="/styles/editor.css">
 </head>
+<?php include(ROOT . '/images/icons_sprite.svg')?>
 <body class="has-navbar-fixed-top">
     <div id="navigate" class="navbar is-fixed-top has-shadow">
     <div id="logo" class="navbar-brand">
-        <a href="/"><img src="/images/logo.png"></a>
+        <a class="navbar-item" href="/">
+            <svg width="272.55999755859375" height="56">
+                <use xlink:href="#logo" />
+            </svg>
+        </a>
     </div>
     <div class="navbar-menu">
         <div class="navbar-start">

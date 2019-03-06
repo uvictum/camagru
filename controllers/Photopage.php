@@ -19,11 +19,10 @@ class Photopage
     public function actionShow()
     {
         require_once (ROOT . '/models/Photos.php');
-
-        $photoModel = new Photos(NULL);
+        $photoModel = new Photos(NULL, $_GET['image']);
         $this->commentsModel->image = $_GET['image'];
-        $photo = $photoModel->getPhoto($_GET['image']);
-        if (isset($photo)) {
+        $photo = $photoModel->getPhoto();
+        if (!empty($photo)) {
             $comments = $this->commentsModel->getComments();
             if (!empty($_SESSION['logged_user'])) {
                 require (ROOT . '/models/Likes.php');
@@ -53,20 +52,18 @@ class Photopage
                 $comment['Text'] = $_POST['txt'];
                 $comment['ID'] = $this->commentsModel->ID;
                 include (ROOT . '/views/tpls/comment.tpl.php');
+                require_once (ROOT . '/models/User.php');
+                $user = new User($_SESSION['logged_user'], null, null, null, null);
+                if ($user->Notify > 0) {
+                    require_once (ROOT . '/components/SendMail.php');
+                    $mail = new SendMail(Array('Login' => $_SESSION['login'], 'image_link' => '/?image=' . $_POST['image']), NULL);
+                    $mail->messagetype = 2;
+                    $mail->sendEmail();
+                }
             } catch (Exception $err) {
                 header('HTTP/1.0 400 Bad error');
                 echo $err->getMessage();
             }
-
-            //require_once (ROOT . '/models/User.php');
-          //  $user = new User();
-           // $userdata = $user->getUserData($_SESSION['login']);
-           // if ($userdata['Notify'] > 0) {
-          //      require_once (ROOT . '/components/SendMail.php');
-           //     $mail = new SendMail($userdata, NULL);
-          //      $mail->messagetype = 2;
-           //     $mail->sendEmail();
-          //  }
         } else {
             header("Location: /");
         }
@@ -92,9 +89,18 @@ class Photopage
     {
         if (is_numeric($_POST['image']) && isset($_SESSION['logged_user']))
         {
-            require (ROOT . '/models/Likes.php');
-            $likeModel = new Likes($_POST['image'], $_SESSION['logged_user']);
-            $likeModel->addLike();
+            require (ROOT . '/models/Photos.php');
+            $img = new Photos($_SESSION['logged_user'], $_POST['image']);
+            try {
+                $photo = $img->getPhoto();
+                $img->deletePhoto();
+                chmod(ROOT . '/'. $photo['Link'], 0740);
+                unlink(ROOT . '/'. $photo['Link']);
+               // echo fileperms(ROOT .'/'. $photo['Link']);
+            } catch (Exception $err) {
+                header('HTTP/1.0 400 Bad Error');
+                echo $err->getMessage();
+            }
         }
     }
 

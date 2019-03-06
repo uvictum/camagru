@@ -38,6 +38,7 @@
             if (confirm("Are you sure about that?")) {
                 let formData = new FormData();
                 formData.append("image", image.id);
+                formData.append("link", (image.src));
                 dataRequest(formData, displayRequest, "delete");
             }
         });

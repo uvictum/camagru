@@ -9,25 +9,25 @@
 <?php include(ROOT . '/images/icons_sprite.svg')?>
 <body class="has-navbar-fixed-top">
     <div id="navigate" class="navbar is-fixed-top has-shadow">
-    <div id="logo" class="navbar-brand">
-        <a class="navbar-item" href="/">
-            <svg width="272.55999755859375" height="56">
-                <use xlink:href="#logo" />
-            </svg>
-        </a>
-    </div>
-    <div class="navbar-menu">
-        <div class="navbar-start">
-            <?php if (isset($_SESSION['logged_user'])) {
-                echo '<a class="navbar-item" href="/cabinet">Hello, ' . $_SESSION['login'] . '</a>';
-            } else {
-                echo '<a class="navbar-item" href="/login">login</a>';
-            }?>
-            <a class="navbar-item" href="/editor">editor</a>
-            <a class="navbar-item" href="/logout">logout</a>
+        <div id="logo" class="navbar-brand">
+            <a class="navbar-item" href="/">
+                <svg width="272.55999755859375" height="56">
+                    <use xlink:href="#logo" />
+                </svg>
+            </a>
         </div>
-        <div class="navbar-end"></div>
-    </div>
+        <div class="navbar-menu">
+            <div class="navbar-start">
+                <?php if (isset($_SESSION['logged_user'])) {
+                    echo '<a class="navbar-item" href="/cabinet">Hello, ' . $_SESSION['login'] . '</a>';
+                } else {
+                    echo '<a class="navbar-item" href="/login">login</a>';
+                }?>
+                <a class="navbar-item" href="/editor">editor</a>
+                <a class="navbar-item" href="/logout">logout</a>
+            </div>
+            <div class="navbar-end"></div>
+        </div>
     </div>
     <div class="columns body-columns">
         <div class="column is-one-third-desktop is-offset-one-third-desktop">
@@ -45,7 +45,7 @@
                         <nav class="level is-mobile">
                             <div class="level-left">
                                 <p class="level-item">
-                                    Likes: <?php echo $photo['Likes']?>
+                                    <?php echo $photo['Likes']?>
                                 </p>
                                 <a class="level-item">
                                     <span class="icon is-small">
@@ -55,7 +55,7 @@
                                     </span>
                                 </a>
                                 <p class="level-item">
-                                    Comments: <?php echo $photo['Comments']?>
+                                    <?php echo $photo['Comments']?>
                                 </p>
                                 <a class="level-item">
                                     <span class="icon is-small">
