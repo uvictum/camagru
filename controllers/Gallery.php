@@ -22,7 +22,7 @@ class Gallery
         } else {
             $usr = NULL;
         }
-        $this->imgs = new Photos($usr);
+        $this->imgs = new Photos($usr, null);
     }
     public function actionDisplay()
     {

@@ -16,7 +16,7 @@ class Editor
         if (isset($_SESSION['logged_user'])) {
             $this->view = ROOT . '/views/imgeditor.php';
             require_once(ROOT . '/models/Photos.php');
-            $this->photo = new Photos($_SESSION['logged_user']);
+            $this->photo = new Photos($_SESSION['logged_user'], null);
         } else {
             $this->view = ROOT . '/views/signin.php';
         }
@@ -28,7 +28,8 @@ class Editor
             $finalimg = $this->mergePhoto(imagecreatefrompng($_POST['image']), imagecreatefrompng($_POST['mask']));
             $filePath = '/images/'. uniqid("", true). '.png';
             if (imagepng($finalimg, ROOT. $filePath)) {
-                $this->photo->savePhoto($filePath, $_SESSION['logged_user']);
+                $this->photo->img = $filePath;
+                $this->photo->savePhoto();
                 echo $filePath;
             }
             else {
@@ -37,7 +38,7 @@ class Editor
         } else {
             if (isset($this->photo)) {
                 $masks = $this->photo->getMasks();
-                $photos = $this->photo->getPhotos($_SESSION['logged_user']);
+                $photos = $this->photo->getPhotos();
             }
             require_once($this->view);
         }

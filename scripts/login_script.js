@@ -12,7 +12,7 @@ window.onload = function () {
   });
 
     function handleLoginResponse(request) {
-        loginHlp.innerText = request.responseText;
+        loginHlp.innerHTML = request.responseText;
         if (request.status !== 200) {
             loginHlp.className = "help is-danger";
         } else {
