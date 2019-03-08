@@ -1,18 +1,18 @@
 window.onload = function () {
     let containerElem = document.getElementsByClassName('container')[0];
     let containerBottom = containerElem.getBoundingClientRect().bottom + window.pageYOffset;
-    var limitLower = 0;
-    var limitUpper = 6;
+    var offset = 0;
+    var limit = 5;
     var stop = 0;
 
     window.onscroll = function() {
-        if (window.pageYOffset > containerBottom && stop < 1) {
+        if (document.body.scrollHeight - window.pageYOffset === window.innerHeight && stop < 1) {
             stop = 1;
             let formData = new FormData();
-            limitLower = limitUpper;
-            limitUpper += 6;
-            formData.append('limitLower', limitLower.toString());
-            formData.append('limitUpper', limitUpper.toString());
+            offset += limit;
+            limit = 3;
+            formData.append('limitLower', offset.toString());
+            formData.append('limitUpper', limit.toString());
             dataRequest(formData, handleGalleryResponse, '');
         }
     };

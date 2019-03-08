@@ -5,10 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Hello Bulma!</title>
     <link rel="stylesheet" href="/styles/bulma.min.css">
+    <link rel="stylesheet" href="/styles/camagru.css">
     <link rel="stylesheet" href="/styles/editor.css">
 </head>
 <?php include(ROOT . '/images/icons_sprite.svg')?>
-<body class="has-navbar-fixed-top">
+<body class="has-navbar-fixed-top Site">
     <div id="navigate" class="navbar is-fixed-top has-shadow">
     <div id="logo" class="navbar-brand">
         <a class="navbar-item" href="/">
@@ -30,53 +31,55 @@
         <div class="navbar-end"></div>
     </div>
 </div>
-    <div class="container box">
-        <div class="columns is-mobile">
-            <div class="column is-three-fifths-mobile is-narrow-desktop box" id="webcam">
-                <div class="file has-name is-boxed" id="fileInput">
-                    <label class="file-label">
-                        <input class="file-input" type="file" name="resume" style="display: none">
-                        <span class="file-cta">
-                            <span class="file-icon">
-                                <i class="fas fa-upload"></i>
+    <div class="Site-content">
+        <div class="container box">
+            <div class="columns is-mobile">
+                <div class="column is-three-fifths-mobile is-narrow-desktop box" id="webcam">
+                    <div class="file has-name is-boxed" id="fileInput">
+                        <label class="file-label">
+                            <input class="file-input" type="file" name="resume" style="display: none">
+                            <span class="file-cta">
+                                <span class="file-icon">
+                                    <i class="fas fa-upload"></i>
+                                </span>
+                                <span class="file-label">
+                                    Choose a file…
+                                </span>
                             </span>
-                            <span class="file-label">
-                                Choose a file…
+                            <span class="file-name">
+                                Screen Shot 2017-07-29 at 15.54.25.png
                             </span>
-                        </span>
-                        <span class="file-name">
-                            Screen Shot 2017-07-29 at 15.54.25.png
-                        </span>
-                    </label>
-                    <button id="preview" style="display: none">Upload photo</button>
-                </div>
-                <video id="video"></video>
-                <canvas id="canvas" width="640" height="480" style="display: none"></canvas>
-                <canvas id="viewport" width="640" height="480" style="display: none;"></canvas>
-            </div>
-            <div class="column box" id="previousPhotos">
-                <?php foreach ($photos as $photo) :?>
-                    <div class="image">
-                        <img src="<?php echo $photo['Link']?>">
+                        </label>
+                        <button id="preview" style="display: none">Upload photo</button>
                     </div>
-                <?php endforeach; ?>
+                    <video id="video"></video>
+                    <canvas id="canvas" width="640" height="480" style="display: none"></canvas>
+                    <canvas id="viewport" width="640" height="480" style="display: none;"></canvas>
+                </div>
+                <div class="column box" id="previousPhotos">
+                    <?php foreach ($photos as $photo) :?>
+                        <div class="image">
+                            <img src="<?php echo $photo['Link']?>">
+                        </div>
+                    <?php endforeach; ?>
+                </div>
             </div>
-        </div>
-        <div class="columns is-mobile box masksSelect">
-            <?php foreach($masks as $msk) {
-                echo '<div class="column"><figure class="image is-128x128"><label>';
-                echo '<input type="radio" name="test" value="small"  class="masksPng" checked>';
-                echo'<img src="'.$msk['Link'].'">';
-                echo '</label></figure></div>';
-            }
-            ?>
-        </div>
-        <div class="columns is-centered">
-            <div class="column has-text-centered">
-                <button id="changeSource" class="button" >Change Source</button>
-                <button id="snap" class="button" disabled>Take Photo</button>
-                <button id="retakePhoto" class="button" style="display: none">Retake Photo</button>
-                <button id="uploadPhoto" class="button is-primary" style="display: none">Upload Photo</button>
+            <div class="columns is-mobile box masksSelect">
+                <?php foreach($masks as $msk) {
+                    echo '<div class="column"><figure class="image is-128x128"><label>';
+                    echo '<input type="radio" name="test" value="small"  class="masksPng" checked>';
+                    echo'<img src="'.$msk['Link'].'">';
+                    echo '</label></figure></div>';
+                }
+                ?>
+            </div>
+            <div class="columns is-centered">
+                <div class="column has-text-centered">
+                    <button id="changeSource" class="button" >Change Source</button>
+                    <button id="snap" class="button" disabled>Take Photo</button>
+                    <button id="retakePhoto" class="button" style="display: none">Retake Photo</button>
+                    <button id="uploadPhoto" class="button is-primary" style="display: none">Upload Photo</button>
+                </div>
             </div>
         </div>
     </div>

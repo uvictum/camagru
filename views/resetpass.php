@@ -51,6 +51,5 @@
     </div>
 </div>
 </body>
-<script src="/scripts/reset_script.js"></script>
 <script src="/scripts/request_queries.js"></script>
 </html>

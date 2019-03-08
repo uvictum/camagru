@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" href="/styles/bulma.min.css">
+    <link rel="stylesheet" href="/styles/camagru.css">
     <style type="text/css">
     </style>
 </head>
 <?php include(ROOT . '/images/icons_sprite.svg')?>
-<body class="has-navbar-fixed-top">
+<body class="has-navbar-fixed-top Site">
     <div id="navigate" class="navbar is-fixed-top has-shadow">
         <div id="logo" class="navbar-brand">
             <a class="navbar-item" href="/">
@@ -32,7 +33,7 @@
             <div class="navbar-end"></div>
         </div>
     </div>
-    <div class="hero-body">
+    <div class="hero-body Site-content">
         <div class="container has-text-centered">
             <div class="column is-4 is-offset-4">
                 <h3 class="title has-text-grey">Registration</h3>

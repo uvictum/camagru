@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Hello Bulma!</title>
     <link rel="stylesheet" href="/styles/bulma.min.css">
+    <link rel="stylesheet" href="/styles/camagru.css">
 </head>
 <?php include(ROOT . '/images/icons_sprite.svg')?>
-<body class="has-navbar-fixed-top">
+<body class="has-navbar-fixed-top Site">
     <div id="navigate" class="navbar is-fixed-top has-shadow">
             <div id="logo" class="navbar-brand">
                 <a class="navbar-item" href="/">
@@ -31,7 +32,7 @@
                 <div class="navbar-end"></div>
             </div>
         </div>
-    <div class="container">
+    <div class="container Site-content">
         <?php
                 $i = 0;
                 foreach($this->photos as $img) {

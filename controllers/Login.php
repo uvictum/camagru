@@ -82,9 +82,9 @@ class Login
             }
         } else {
             try {
-                require_once (ROOT.'/views/resetpass.php');
-                $user = new User(null, $_GET['email'], null, $_GET['token'], null);
+                $user = new User(null, null, null, $_GET['email'], $_GET['token']);
                 $_SESSION['reset_id'] = $user->ID;
+                require_once (ROOT.'/views/resetpass.php');
             } catch (Exception $err) {
                 header('HTTP/1.0 400 Bad error');
                 echo $err->getMessage();
@@ -108,7 +108,6 @@ class Login
             echo "Password was updated";
         } else {
             echo "this operation is not allowed";
-            header('Location: /');
         }
     }
 }

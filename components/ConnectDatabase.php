@@ -17,6 +17,7 @@ class ConnectDatabase
             return ($pdo);
         }
         catch (PDOException $err) {
+            header("Refresh:10");
             echo "No Database found<br>"; //$err->getMessage();
             return(0);
         }

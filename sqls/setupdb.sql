@@ -25,12 +25,14 @@ ID int NOT NULL AUTO_INCREMENT Primary key,
 UserID int NOT NULL,
 ImageID int NOT NULL,
 Postdate TIMESTAMP NULL,
-Text VARCHAR(350) NOT NULL);
+Text VARCHAR(350) NOT NULL,
+CONSTRAINT FOREIGN KEY (ImageID) REFERENCES Images (ID) ON DELETE CASCADE);
 
 CREATE TABLE Likes (
 ID int NOT NULL AUTO_INCREMENT Primary key,
 UserID int NOT NULL,
-ImageID int NOT NULL);
+ImageID int NOT NULL,
+CONSTRAINT FOREIGN KEY (ImageID) REFERENCES Images (ID) ON DELETE CASCADE);
 
 INSERT INTO Images (UserID, Link) VALUES (1, 'images/test.JPG');
 INSERT INTO Images (UserID, Link) VALUES (1, 'images/sample1.jpg');
@@ -43,7 +45,6 @@ INSERT INTO Masks (Link) VALUES ('images/masks/cowboy-hat.png');
 INSERT INTO Masks (Link) VALUES ('images/masks/frames-circo-png.png');
 INSERT INTO Masks (Link) VALUES ('images/masks/meme-sunglasses.png');
 INSERT INTO Masks (Link) VALUES ('images/masks/christmas-frame-1916987_640.png');
-INSERT INTO Masks (Link) VALUES ('images/masks/troll.png');
 
 CREATE TRIGGER Comment_Added
 AFTER INSERT ON Comments

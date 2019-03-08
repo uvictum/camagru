@@ -48,7 +48,7 @@ class Gallery
                     include ROOT . '/views/tpls/main_photo.tpl.php';
                 }
             } else {
-                header("HTTP 1.0/400 Bad Error");
+                header('HTTP/1.0 400 Bad error');
                 echo ('here');
             }
         } else {

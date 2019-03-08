@@ -13,7 +13,8 @@ class Photos
     private $img;
     private $id;
     private $limitLower = 0;
-    private $limitUpper = 6;
+    private $limitUpper = 5;
+    private $limit;
 
     public function __construct($usr, $id)
     {
@@ -47,11 +48,11 @@ class Photos
         $sql .= " ORDER BY Images.ID DESC";
         $sqlLim = "SELECT * FROM Images";
         $statement = $this->pdo->query($sqlLim);
-        $limit = $statement->rowCount();
-        if ($this->limitLower > $limit) {
+        $this->limit = $statement->rowCount();
+        if ($this->limitLower >= $this->limit) {
             return null;
-        } else if ($this->limitUpper > $limit) {
-            $this->limitUpper = $limit;
+        } else if ($this->limitUpper > $this->limit) {
+            $this->limitUpper = $this->limit;
         }
         $sql .= " LIMIT " . $this->limitLower . ", " . $this->limitUpper;
         $statement = $this->pdo->query($sql);

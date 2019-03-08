@@ -44,19 +44,19 @@ class Photopage
         {
             $this->commentsModel->image = $_POST['image'];
             $this->commentsModel->userID = $_SESSION['logged_user'];
-            $this->commentsModel->text = $_POST['txt'];
+            $this->commentsModel->text = htmlspecialchars($_POST['txt']);
             $this->commentsModel->login = $_SESSION['login'];
             try {
                 $this->commentsModel->saveComment();
                 $comment['Login'] = $_SESSION['login'];
-                $comment['Text'] = $_POST['txt'];
+                $comment['Text'] = htmlspecialchars($_POST['txt']);
                 $comment['ID'] = $this->commentsModel->ID;
                 include (ROOT . '/views/tpls/comment.tpl.php');
                 require_once (ROOT . '/models/User.php');
                 $user = new User($_SESSION['logged_user'], null, null, null, null);
                 if ($user->Notify > 0) {
                     require_once (ROOT . '/components/SendMail.php');
-                    $mail = new SendMail(Array('Login' => $_SESSION['login'], 'image_link' => '/?image=' . $_POST['image']), NULL);
+                    $mail = new SendMail(Array('Login' => $_SESSION['login'], 'Email' => $user->Email, 'image_link' => '/?image=' . $_POST['image']), NULL);
                     $mail->messagetype = 2;
                     $mail->sendEmail();
                 }
@@ -96,7 +96,6 @@ class Photopage
                 $img->deletePhoto();
                 chmod(ROOT . '/'. $photo['Link'], 0740);
                 unlink(ROOT . '/'. $photo['Link']);
-               // echo fileperms(ROOT .'/'. $photo['Link']);
             } catch (Exception $err) {
                 header('HTTP/1.0 400 Bad Error');
                 echo $err->getMessage();

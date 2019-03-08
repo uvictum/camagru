@@ -13,7 +13,7 @@ class SendMail
     public $messagetype = 0;
     private $emailtext;
     private static $mailsubjects = array("Finish Registration to Camagru", "Here is reset link for Camagru",
-                                           "Finish Registration to Camagru", "Your photo was commented on Camagru");
+                                           "Your photo was commented on Camagru",  "Finish Registration to Camagru");
 
     public function __construct($userdata, $token)
     {
@@ -38,8 +38,8 @@ class SendMail
         }
         elseif ($this->messagetype == 1) {
             $this->emailtext = ' 
-            Please click this link to reset your account password:
-            http://localhost:8200/resetpass/?email='.$userdata['Email'].'&token='.$token.'';
+            Please click this link to reset your account password:' .
+            $_SERVER['HTTP_HOST'] .  '/resetpass/?email='.$userdata['Email'].'&token='.$token.'';
         }
         elseif ($this->messagetype == 2) {
             $this->emailtext = ' 

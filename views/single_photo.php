@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Hello Bulma!</title>
     <link rel="stylesheet" href="/styles/bulma.min.css">
+    <link rel="stylesheet" href="/styles/camagru.css">
 </head>
 <?php include(ROOT . '/images/icons_sprite.svg')?>
-<body class="has-navbar-fixed-top">
+<body class="has-navbar-fixed-top Site">
     <div id="navigate" class="navbar is-fixed-top has-shadow">
         <div id="logo" class="navbar-brand">
             <a class="navbar-item" href="/">
@@ -24,12 +25,14 @@
                     echo '<a class="navbar-item" href="/login">login</a>';
                 }?>
                 <a class="navbar-item" href="/editor">editor</a>
-                <a class="navbar-item" href="/logout">logout</a>
+                <?php if (isset($_SESSION['logged_user'])) {
+                    echo '<a class="navbar-item" id="logout">logout</a>';
+                }?>
             </div>
             <div class="navbar-end"></div>
         </div>
     </div>
-    <div class="columns body-columns">
+    <div class="columns body-columns Site-content">
         <div class="column is-one-third-desktop is-offset-one-third-desktop">
             <div class="card">
                 <div class="card-image">

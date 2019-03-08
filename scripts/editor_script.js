@@ -64,6 +64,9 @@ window.onload = function () {
         snpBtn.disabled = false;
         if (video.disabled !== true) {
             swapObjDisplay(canvas, video);
+        } else {
+            canvas.style.display = 'none';
+            context.clearRect(0,0, canvas.width, canvas.height);
         }
         rtkBtn.style.display = 'none';
         chngSrcBtn.disabled = false;
