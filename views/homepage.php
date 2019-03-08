@@ -56,4 +56,5 @@
 </body>
 <script src="/scripts/request_queries.js"></script>
 <script src="/scripts/like_script.js"></script>
+<script src="/scripts/gallery_script.js"></script>
 </html>

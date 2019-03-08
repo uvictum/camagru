@@ -12,6 +12,8 @@ class Photos
     private $usr;
     private $img;
     private $id;
+    private $limitLower = 0;
+    private $limitUpper = 6;
 
     public function __construct($usr, $id)
     {
@@ -39,10 +41,19 @@ class Photos
     public function getPhotos()
     {
         $sql = "SELECT Images.ID, Images.Link, Images.Comments, Images.Likes, Users.Login FROM Images LEFT JOIN Users ON Images.UserID = Users.ID";
-        if (!empty($id)) {
+        if (!empty($usr)) {
             $sql .= " WHERE Users.ID = $this->usr";
         }
         $sql .= " ORDER BY Images.ID DESC";
+        $sqlLim = "SELECT * FROM Images";
+        $statement = $this->pdo->query($sqlLim);
+        $limit = $statement->rowCount();
+        if ($this->limitLower > $limit) {
+            return null;
+        } else if ($this->limitUpper > $limit) {
+            $this->limitUpper = $limit;
+        }
+        $sql .= " LIMIT " . $this->limitLower . ", " . $this->limitUpper;
         $statement = $this->pdo->query($sql);
         $photos = $statement->fetchAll();
         return($photos);

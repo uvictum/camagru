@@ -67,6 +67,9 @@ window.onload = function () {
         }
         rtkBtn.style.display = 'none';
         chngSrcBtn.disabled = false;
+        masks.forEach(function(element) {
+            element.disabled =false;
+        });
     });
     prevBtn.addEventListener('click', previewFile);
 

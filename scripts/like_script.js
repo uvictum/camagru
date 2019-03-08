@@ -38,11 +38,13 @@
     function checkLogged(request) {
         if (likeBtns && request.status === 200) {
             likeBtns.forEach(function (elem) {
+                elem.removeEventListener("click", likeFunc);
                 elem.addEventListener("click", likeFunc);
             })
         }
         if (likedBtns && request.status === 200) {
             likedBtns.forEach(function (elem) {
+                elem.removeEventListener("click", unlikeFunc);
                 elem.addEventListener("click", unlikeFunc)
             })
         }

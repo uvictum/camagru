@@ -7,7 +7,7 @@ class Setup
     {
         require (ROOT.'/config/database.php');
         try {
-            $this->pdo = new PDO("mysql:host=camagrudb;port=3306;", $DB_USER, $DB_PASSWORD);
+            $this->pdo = new PDO("mysql:host=localhost;port=3306;", $DB_USER, $DB_PASSWORD);
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         }
         catch (PDOException $err) {
